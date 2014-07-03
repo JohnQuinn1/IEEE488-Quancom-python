@@ -14,7 +14,7 @@ class IEEEInterface:
         
     def openCard(self):
         self.cardhandle = self.myDLL.QAPIExtOpenCard(54,0)
-        self.cardOpen = True
+        self.cardOpen = True if self.cardhandle !=0 else False
         return self.cardhandle
 
     def closeCard(self):
@@ -26,7 +26,7 @@ class IEEEInterface:
         buffer = c_char_p(b"")
         readSuccessful = i = 0
         while(readSuccessful == 0 and  i < 5):
-            readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle,1,buffer,1000,0)
+            readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle,device,buffer,1000,0)
             i = i+1
         return buffer.value.decode('utf-8')
 

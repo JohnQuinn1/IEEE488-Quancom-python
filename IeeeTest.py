@@ -5,7 +5,8 @@ Created on Wed Jul  2 14:33:10 2014
 @author: Marco Forte
 """
 
-from ctypes import *
+from ctypes import windll
+from ctypes import c_char_p
 
 cardid = 54
 
