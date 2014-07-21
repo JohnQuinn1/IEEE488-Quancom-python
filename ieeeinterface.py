@@ -6,7 +6,8 @@ from ctypes import c_char_p
 import types
 class IEEEInterface:
 
-
+# Loads up the dll from the c:\windows\system32 folder
+# Functions are accessed as attributes of dll objects:
     def __init__(self):
         print("Initialised interface")
         self.myDLL = windll.qlib32
@@ -34,7 +35,7 @@ class IEEEInterface:
     def writeDevice(self, device, string):
         buffer = c_char_p(bytes(string,'utf-8'))
         #strncpy(tmp, str.c_str(), 1000);
-        return self.myDLL.QAPIExtWriteString(self.cardhandle,device,buffer,len(string),0);
+        return bool(self.myDLL.QAPIExtWriteString(self.cardhandle,device,buffer,len(string),0));
 
     def __getattr__(self, name):
             def myfunc(self,*args):
