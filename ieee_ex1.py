@@ -4,8 +4,8 @@ Created on Thu Jul  3 11:47:12 2014
 
 @author: Marco Forte
 
-@description: Attempts to read value from device(Pico Ammeter) and 
-prints value as float
+@description: Attempts to read value from device(Pico Ammeter) and
+ prints value as float
 """
 
 from ieeeinterface import IEEEInterface
@@ -14,7 +14,7 @@ myCard = IEEEInterface()
 
 cardhandle = myCard.openCard()
 
-if(cardhandle ==0):
+if(cardhandle == 0):
     print("Error - could not open card, exiting...")
     sys.exit()
 else:
@@ -28,7 +28,7 @@ if(response == ""):
     sys.exit()
 else:
     print("Recieved response, " + response)
-    
+
 floatValue = float(response[4:])
 
 print("Converted to double")
