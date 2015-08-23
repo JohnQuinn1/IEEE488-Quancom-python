@@ -29,9 +29,9 @@ class IEEEInterface:
     def readDevice(self, device):
         buffer = c_char_p(b"")
         readSuccessful = i = 0
-        while(readSuccessful == 0 and i < 5):
+        while(!readSuccessful and i < 5):
             readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle, device, buffer, 1000, 0)
-            i = i+1
+            i += 1
         return buffer.value.decode('utf-8')
 
     def writeDevice(self, device, string):
