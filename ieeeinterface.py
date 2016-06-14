@@ -14,7 +14,7 @@ class IEEEInterface:
         print("Initialised interface")
         self.myDLL = windll.qlib32
         self.cardOpen = False
-    
+
     # 54 is the cardid specific to the card I'm using as far as I can remember
     def openCard(self):
         self.cardhandle = self.myDLL.QAPIExtOpenCard(54, 0)
@@ -27,10 +27,11 @@ class IEEEInterface:
 
     # Tries at most 5 times to read device
     def readDevice(self, device):
-        buffer = c_char_p(b"")
+        #buffer = c_char_p(b"")
+        buffer=create_string_buffer(1024)
         readSuccessful = i = 0
         while(!readSuccessful and i < 5):
-            readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle, device, buffer, 1000, 0)
+            readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle, device, buffer, 1024, 0)
             i += 1
         return buffer.value.decode('utf-8')
 
