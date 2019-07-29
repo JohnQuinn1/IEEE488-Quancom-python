@@ -46,6 +46,6 @@ Download zip and cd to IEEE488-Quancom-python folder.
 
 To install: pip install .
 
-To upgrade: pip install —upgrade .
+To upgrade: pip install --upgrade .
 
 To remove: pip uninstall ieeeinterface
