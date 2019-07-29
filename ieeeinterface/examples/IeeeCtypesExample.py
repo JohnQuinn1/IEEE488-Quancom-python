@@ -16,7 +16,7 @@ cardid = 54
 myDLL = windll.qlib32
 cardhandle = myDLL.QAPIExtOpenCard(54, 0)
 
-buffer = c_char_p(b"")
+buffer = c_char_p(b"")  ## memory leak - bad! should allocate a string! JQ
 isStringReturned = i = 0
 while(isStringReturned == 0 and i < 5):
     isStringReturned = myDLL.QAPIExtReadString(cardhandle, 1, buffer, 1000, 0)

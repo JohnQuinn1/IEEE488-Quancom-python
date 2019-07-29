@@ -11,12 +11,17 @@ class IEEEInterface:
     # Loads up the dll from the c:\windows\system32 folder
     # Functions are accessed as attributes of dll objects:
     def __init__(self):
-        print("Initialised interface")
+        print("Initialised IEEE488 interface")
         self.myDLL = windll.qlib32
         self.cardOpen = False
 
+    def __del__(self):
+        if self.cardOpen:
+            closeCard()
+
     # 54 is the cardid specific to the card I'm using as far as I can remember
     def openCard(self):
+        """ Establish connection with Quancom GBIP card"""
         self.cardhandle = self.myDLL.QAPIExtOpenCard(54, 0)
         self.cardOpen = True if self.cardhandle != 0 else False
         return self.cardhandle
@@ -25,20 +30,23 @@ class IEEEInterface:
         self.myDLL.QAPIExtCloseCard(self.cardhandle)
         self.cardOpen = False
 
-    # Tries at most 5 times to read device
     def readDevice(self, device):
-        #buffer = c_char_p(b"")
+        """ Read from device returning a string,
+         which is empty of the read failed."""
         buffer=create_string_buffer(1024)
-        readSuccessful = i = 0
-        while(!readSuccessful and i < 5):
-            readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle, device, buffer, 1024, 0)
-            i += 1
+        readSuccessful = self.myDLL.QAPIExtReadString(self.cardhandle,
+                                                      device,
+                                                      buffer,
+                                                      1024, 0)
         return buffer.value.decode('utf-8')
 
     def writeDevice(self, device, string):
+        """ Write a string to the device. """
         buffer = c_char_p(bytes(string, 'utf-8'))
-        # strncpy(tmp, str.c_str(), 1000);
-        return bool(self.myDLL.QAPIExtWriteString(self.cardhandle, device, buffer, len(string), 0))
+        return bool(self.myDLL.QAPIExtWriteString(self.cardhandle,
+                                                  device,
+                                                  buffer,
+                                                  len(string), 0))
 
     def __getattr__(self, name):
             def myfunc(self, *args):
